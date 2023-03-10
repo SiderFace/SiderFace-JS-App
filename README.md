@@ -1,2 +1,3 @@
-# Siders-js-app
- CareerFoundry JS Pokedex App
+# Siders-Js-App
+ Pokedex
+ 
