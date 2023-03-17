@@ -1,19 +1,19 @@
 let pokemonRepository = (function () {
    let pokemonList = [];
 
-   //external api source for pokemon data
+   // External api source for pokemon data
    let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=350';
 
    function add(pokemon) {
       pokemonList.push(pokemon);
    }
 
-   //establish what the getAll function will do
+   // Establish what the getAll function will do
    function getAll() {
       return pokemonList;
    }
 
-   //Create buttons on a list in the HTML containers
+   // Create buttons on a list in the HTML containers
    function addListItem(pokemon) {
       let pokemonList = document.querySelector('.pokemon-list .row');
       let listPokemon = document.createElement('div');
@@ -27,12 +27,14 @@ let pokemonRepository = (function () {
       button.setAttribute('data-target', '#pokemonModal');
       listPokemon.appendChild(button);
       pokemonList.appendChild(listPokemon);
+
+   // Event listener to showDetails when clicked
       button.addEventListener('click' , function () {
          pokemonRepository.showDetails(pokemon);
       });
    }
 
-   //Pull the data from loadDetails and loadList functions and set how and where they will be displayed
+   // Pull the data from loadDetails and loadList functions and set how and where they will be displayed
    function showDetails(pokemon) {
       pokemonRepository.loadDetails(pokemon).then(function () {
         showModal(pokemon);
@@ -41,25 +43,17 @@ let pokemonRepository = (function () {
      
    //Modal popup when each Pokemon button is clicked
    function showModal(pokemon) {
-      let modalTitle = $('.modal-title');
-      let modalBody = $('.modal-body');
-  
-      modalTitle.empty();
-      modalBody.empty();
-  
-      let pokemonName = $('<h1>' + pokemon.name + '</h1>')
-      let pokemonImage = $('<img class="modal-img" style="width:50%">');
-      pokemonImage.attr('src', pokemon.imageUrl);
-      let pokemonHeight = $('<p>' + 'Height : ' + pokemon.height + '</p>');
-      
-      modalTitle.append(pokemonName);
-      modalBody.append(pokemonImage);
-      modalBody.append(pokemonHeight);
+      let modalTitle = document.querySelector('.modal-title');
+      let modalBody = document.querySelector('.modal-body');
 
-      modalBody.addClass('text-center');
-    }
+      modalTitle.innerHTML = '<h1>' + pokemon.name + '</h1>';
+      modalBody.innerHTML = '<img class="modal-img" style="width:50%" src="' + pokemon.imageUrl + '">'
+                           + '<p>Height : ' + pokemon.height + '</p>';
 
-   //message to inform user that the list is loading
+      modalBody.classList.add('text-center');
+   }
+
+   // Message to inform user that the list is loading
    function showLoadingMessage() {
       let message = document.createElement('p');
       message.innerText = 'That\'s a lot of Pokemon! Please be patient while we catch \'em all for you ^-^ ';
@@ -70,7 +64,7 @@ let pokemonRepository = (function () {
       document.body.removeChild(message);
    }
     
-   //fetch the list from external api database
+   // Fetch the list from external api database
    function loadList() {
       showLoadingMessage();
       return fetch(apiUrl).then(function (response) {
@@ -82,7 +76,6 @@ let pokemonRepository = (function () {
                detailsUrl: item.url
             };
             add(pokemon);
-            console.log(pokemon);
          });
       }).catch(function (e) {
          hideLoadingMessage();
@@ -110,13 +103,13 @@ let pokemonRepository = (function () {
 
     //TO LEARN:   I don't have a good enough comprehension on why the return is written the way that it is
    return {
-      add: add,
-      getAll: getAll,
-      addListItem: addListItem,
-      loadList: loadList,
-      loadDetails: loadDetails,
-      showDetails: showDetails,
-      showModal: showModal,
+      add,
+      getAll,
+      addListItem,
+      loadList,
+      loadDetails,
+      showDetails,
+      showModal,
    };
 })();
 
